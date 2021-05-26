@@ -4146,11 +4146,6 @@ class Octocat {
     }
   }
 
-  // Placeholder for overriding
-  customize(svg) {
-    console.log(svg)
-  }
-
   redraw() {
     // Treat all of the options (as JSON) as the key
     const key = JSON.stringify(this.options)
@@ -4227,7 +4222,6 @@ class Octocat {
       svg = window.document.importNode(svg.documentElement, true)
       _this5.applyRules(svg)
       _this5.colorCheck(svg)
-      _this5.customize(svg)
       body = svg.outerHTML
 
       const blob = new Blob([body], {type: 'image/svg+xml'})

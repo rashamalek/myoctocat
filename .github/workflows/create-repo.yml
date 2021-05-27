@@ -30,7 +30,7 @@ jobs:
             {
               owner: context.repo.owner,
               name: '${{github.event.inputs.name}}',
-              template_repo: context.repo.repo,
+              template_repo: context.repo.name,
               template_owner: context.repo.owner
             }
           )

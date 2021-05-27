@@ -29,8 +29,19 @@ jobs:
     steps:
     # Runs a single command using the runners shell
     - name: Send greeting
-      if: contains(github.event.issue.labels.*.name, 'create demo')
-      run: echo "Hello issue"
+      if: contains(github.event.issue.labels.*.name, 'New Octocat')
+      uses: actions/github-script@v3
+      with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+        script: |
+          let comments = await github.issues.listComments(
+            {
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: github.event.issue.number
+            }
+          )
+          console.log(comments[0].body)
     - name: Send greeting
       if: github.event_name == 'workflow_dispatch'
       run: echo "Hello workflow_dispatch ${{ github.event.inputs.name }}"

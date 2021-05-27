@@ -22,6 +22,16 @@ jobs:
 
     steps:
     - name: Create repo
-      run: |
-        echo ${{ secrets.TOKEN }} | gh auth login --with-token
-        gh repo create --confirm --public --description 'A custom Octocat' --template summerfest-2021/myoctocat summerfest-2021/${{github.event.inputs.name}}
+      uses: actions/github-script@v3
+      with:
+        github-token: ${{ secrets.TOKEN }}
+        script: |
+          github.repos.createDispatchEvent(
+            {
+              owner: context.repo.owner,
+              repo: ${{github.event.inputs.name}},
+              template_owner: context.repo.owner,
+              template_repo: context.repo.repo
+              private: false
+            }
+          )

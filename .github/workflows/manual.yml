@@ -6,7 +6,7 @@ name: Manual workflow
 # or API.
 on:
   issues:
-    type: opened
+    type: [opened, reopened]
   workflow_dispatch:
     # Inputs the workflow accepts.
     inputs:

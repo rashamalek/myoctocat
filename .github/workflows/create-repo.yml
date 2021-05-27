@@ -28,5 +28,5 @@ jobs:
     # Runs a single command using the runners shell
     - name: Create repo
       run: |
-        gh auth login --with-token ${{ secrets.TOKEN }} 
+        echo ${{ secrets.TOKEN }} | gh auth login --with-token
         gh repo create --confirm --public --description 'A custom Octocat' --template summerfest-2021/myoctocat summerfest-2021/${{github.event.inputs.name}}

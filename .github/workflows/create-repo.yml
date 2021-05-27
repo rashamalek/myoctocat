@@ -25,7 +25,7 @@ jobs:
     steps:
     - name: Export repo name from input
       if: github.event_name == 'workflow_dispatch'
-      run: export REPO_NAME=${{ github.event.inputs.name }}"
+      run: REPO_NAME=${{ github.event.inputs.name }}"
     - name: Get repo name from issue
       if: contains(github.event.issue.labels.*.name, 'New Octocat')
       uses: actions/github-script@v3
@@ -40,7 +40,7 @@ jobs:
           console.log(repoName)
           return repoName
     - name: Export repo name from issue
-      run: export REPO_NAME=${{steps.get-repo-name.outputs.result}}
+      run: REPO_NAME=${{steps.get-repo-name.outputs.result}}
     - name: Debug
       run: echo $REPO_NAME
     - name: Create repo
@@ -51,7 +51,7 @@ jobs:
           github.repos.createUsingTemplate(
             {
               owner: context.repo.owner,
-              name: '${{github.event.inputs.name}}',
+              name: '${{env.REPO_NAME}}',
               template_repo: context.repo.repo,
               template_owner: context.repo.owner
             }

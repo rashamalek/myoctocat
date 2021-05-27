@@ -34,7 +34,7 @@ jobs:
       with:
         github-token: ${{ secrets.GITHUB_TOKEN }}
         script: |
-          console.log(context)
+          console.log(context.payload.issue.body)
           /*
           let comments = await github.issues.listComments(
             {

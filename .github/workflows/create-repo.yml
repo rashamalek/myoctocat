@@ -21,9 +21,8 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Update GH
-      run: brew install gh
     - name: Create repo
       run: |
+        gh --version
         echo ${{ secrets.TOKEN }} | gh auth login --with-token
         gh repo create --confirm --public --description 'A custom Octocat' --template summerfest-2021/myoctocat summerfest-2021/${{github.event.inputs.name}}

@@ -23,7 +23,5 @@ jobs:
     steps:
     - name: Create repo
       run: |
-        git init
-        gh --version
         echo ${{ secrets.TOKEN }} | gh auth login --with-token
         gh repo create --confirm --public --description 'A custom Octocat' --template summerfest-2021/myoctocat summerfest-2021/${{github.event.inputs.name}}

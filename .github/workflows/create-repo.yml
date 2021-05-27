@@ -40,7 +40,7 @@ jobs:
           console.log(repoName)
           return repoName
     - name: Export repo name from issue
-      run: echo "::set-output name=REPO_NAME=${{steps.get-repo-name.outputs.result}}
+      run: echo "::set-output name=REPO_NAME::${{steps.get-repo-name.outputs.result}}
     - name: Debug
       run: echo $REPO_NAME
     - name: Create repo

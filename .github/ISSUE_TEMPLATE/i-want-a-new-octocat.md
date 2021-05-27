@@ -2,7 +2,7 @@
 name: I want a new Octocat
 about: 'This is to create a new repo where you will be able to design your own :octocat:'
 title: Create a new Octocat
-labels: ''
+labels: New Octocat
 assignees: ''
 
 ---

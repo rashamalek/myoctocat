@@ -28,10 +28,9 @@ jobs:
         script: |
           github.repos.createUsingTemplate(
             {
-              owner: context.repo.owner,
-              name: "${{github.event.inputs.name}}",
-              template_owner: context.repo.owner,
-              template_repo: context.repo.repo
-              private: false
+              owner: 'summerfest-2021',
+              name: 'test',
+              template_repo: 'myoctocat',
+              template_owner: 'summerfest-2021'
             }
           )

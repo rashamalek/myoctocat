@@ -5,6 +5,8 @@ name: Create repo
 # Controls when the action will run. Workflow runs when manually triggered using the UI
 # or API.
 on:
+  issues:
+    type: [opened, reopened]
   workflow_dispatch:
     # Inputs the workflow accepts.
     inputs:
@@ -21,12 +23,31 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+    - name: Export repo name from input
+      if: github.event_name == 'workflow_dispatch'
+      run: export REPO_NAME=${{ github.event.inputs.name }}"
+    - name: Get repo name from issue
+      if: contains(github.event.issue.labels.*.name, 'New Octocat')
+      uses: actions/github-script@v3
+      id: get-repo-name
+      with:  
+        result-encoding: string
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+        script: |
+          console.log(context.payload.issue.body)
+          let rgx = /I want to name my Octocat:(.*)/gm
+          let repoName = rgx.exec(context.payload.issue.body)[1].trim()
+          console.log(repoName)
+          return repoName
+    - name: Export repo name from issue
+      run: export REPO_NAME=${{steps.get-repo-name.outputs.result}}
+    - name: Debug
+      run: echo $REPO_NAME
     - name: Create repo
       uses: actions/github-script@v3
       with:
         github-token: ${{ secrets.TOKEN }}
         script: |
-          console.log(context.repo)
           github.repos.createUsingTemplate(
             {
               owner: context.repo.owner,

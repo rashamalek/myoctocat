@@ -22,7 +22,7 @@ jobs:
 
     steps:
     - name: Update GH
-      run: brew upgrade gh
+      run: brew install gh
     - name: Create repo
       run: |
         echo ${{ secrets.TOKEN }} | gh auth login --with-token

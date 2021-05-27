@@ -28,6 +28,7 @@ jobs:
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
     # Runs a single command using the runners shell
+    - run: echo ${{ github.event }}
     - name: Send greeting
       if: contains(github.event.issue.labels.*.name, 'create demo')
       run: echo "Hello issue ${{ github.event.inputs.name }}"

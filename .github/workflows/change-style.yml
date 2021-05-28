@@ -12,7 +12,7 @@ jobs:
 
     steps:
     - name: Checkout
-      uses: actions/checkout@2
+      uses: actions/checkout@v2
     - name: Get Style type
       uses: actions/github-script@v3
       id: get-style-type

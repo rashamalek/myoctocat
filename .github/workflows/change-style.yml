@@ -1,11 +1,12 @@
 name: Change Octocat style
 
 on:
-  issue_comment
+  types: [opened, edited]
 
 jobs:
   detect_style_type:
     runs-on: ubuntu-latest
+    if: contains(github.event.issue.labels.*.name, 'Octocat style')
 
     steps:
     - name: Does it workflow

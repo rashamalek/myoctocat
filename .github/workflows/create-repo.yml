@@ -42,6 +42,7 @@ jobs:
       run: echo "REPO_NAME=${{steps.get-repo-name.outputs.result}}" >> $GITHUB_ENV
     - name: Create repo
       uses: actions/github-script@v3
+      if: env.REPO_NAME
       with:
         github-token: ${{ secrets.TOKEN }}
         script: |

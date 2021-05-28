@@ -15,7 +15,7 @@ jobs:
       uses: actions/checkout@v2
     - name: Get Style type
       uses: actions/github-script@v3
-      id: get-style-type
+      id: getStyleType
       with:  
         result-encoding: json
         github-token: ${{ secrets.GITHUB_TOKEN }}
@@ -43,18 +43,18 @@ jobs:
     - name: debug
       run: env
     - name: Add follow-up content
-      if: steps.get-style-type.outputs.result && steps.get-style-type.outputs.result.alreadyChecked == false
+      if: steps.getStyleType.outputs.result && steps.getStyleType.outputs.result.alreadyChecked == false
       uses: actions/github-script@v4
       id: add-follow-up
       env:
-        STYLE_TYPE_VALUE: ${{ steps.get-style-type.outputs.result.value }}
-        STYLE_TYPE_ALREADY_CHECK: ${{ steps.get-style-type.outputs.result.alreadyChecked }}
+        STYLE_TYPE_VALUE: ${{ steps.getStyleType.outputs.result.value }}
+        STYLE_TYPE_ALREADY_CHECK: ${{ steps.getStyleType.outputs.result.alreadyChecked }}
       with:  
         result-encoding: json
         github-token: ${{ secrets.GITHUB_TOKEN }}
         script: |
           const fs = require('fs')
-          let styleType = process.env.STYLE_TYPE_VALUE
+          let styleType = '${{ steps.getStyleType.outputs.result.value }}'
           let newBody = context.payload.issue.body.replace(styleType, `${styleType}<!--checked-->`)
           fs.readFile(`./.github/styles/${styleType}.md`, 'utf8' , (err, data) => {
             if (err) {

@@ -11,15 +11,50 @@ jobs:
     if: contains(github.event.issue.labels.*.name, 'Octocat style')
 
     steps:
-    - name: Get checkboxes
+    - name: Checkout
+      uses: actions/checkout@2
+    - name: Get Style type
       uses: actions/github-script@v3
-      id: get-checkboxes
+      id: get-style-type
       with:  
-        result-encoding: string
+        result-encoding: json
         github-token: ${{ secrets.GITHUB_TOKEN }}
         script: |
           console.log(context.payload.issue.body)
           let rgx = /\-\s\[x\]\s(.*)/gm
-          let checkValue = rgx.exec(context.payload.issue.body)
-          console.log(checkValue)
-          return checkValue
+          let checkValue = rgx.exec(context.payload.issue.body)[1]
+          if (checkValue.includes('<!--checked-->')) {
+            checkValue = checkValue.replace('<!--checked-->', '')
+            return {
+              value: checkValue,
+              alreadyChecked: true
+            }
+          } else {
+            return {
+              value: checkValue,
+              alreadyChecked: false
+            }
+          }
+          
+    - name: Add follow-up content
+      if: steps.get-style-type.outputs.result.alreadyChecked == false
+      uses: actions/github-script@v3
+      id: add-follow-up
+      with:  
+        result-encoding: json
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+        script: |
+          const fs = require('fs')
+          let styleType = steps.get-style-type.outputs.result.value
+          let newBody = context.payload.issue.body.replace(styleType, `${styleType}<!--checked-->`)
+          fs.readFile(`./.github/styles/${styleType}.md`, 'utf8' , (err, data) => {
+            if (err) {
+              console.error(err)
+              return
+            } else {
+              console.log(data)
+            }
+          })
+          // let fup // load from disk
+          // newBody = newBody + fup
+          // update issue

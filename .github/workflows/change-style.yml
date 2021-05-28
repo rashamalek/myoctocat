@@ -22,22 +22,25 @@ jobs:
         script: |
           console.log(context.payload.issue.body)
           let rgx = /\-\s\[x\]\s(.*)/gm
-          let checkValue = rgx.exec(context.payload.issue.body)[1]
-          if (checkValue.includes('<!--checked-->')) {
-            checkValue = checkValue.replace('<!--checked-->', '')
-            return {
-              value: checkValue,
-              alreadyChecked: true
-            }
-          } else {
-            return {
-              value: checkValue,
-              alreadyChecked: false
+          let rgxMatch = rgx.exec(context.payload.issue.body)
+          if (rgxMatch) {
+            let checkValue = rgxMatch[1]
+            if (checkValue.includes('<!--checked-->')) {
+              checkValue = checkValue.replace('<!--checked-->', '')
+              return {
+                value: checkValue,
+                alreadyChecked: true
+              }
+            } else {
+              return {
+                value: checkValue,
+                alreadyChecked: false
+              }
             }
           }
           
     - name: Add follow-up content
-      if: steps.get-style-type.outputs.result.alreadyChecked == false
+      if: steps.get-style-type.outputs.result && steps.get-style-type.outputs.result.alreadyChecked == false
       uses: actions/github-script@v3
       id: add-follow-up
       with:  

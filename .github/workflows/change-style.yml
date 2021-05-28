@@ -1,7 +1,8 @@
 name: Change Octocat style
 
 on:
-  types: [opened, edited]
+  issues:
+    types: [opened, edited]
 
 jobs:
   detect_style_type:

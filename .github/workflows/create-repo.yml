@@ -42,8 +42,6 @@ jobs:
     - name: Export repo name from issue
       if: contains(github.event.issue.labels.*.name, 'New Octocat')
       run: echo "REPO_NAME=${{steps.get-repo-name.outputs.result}}" >> $GITHUB_ENV
-    - name: Debug
-      run: echo $REPO_NAME
     - name: Create repo
       uses: actions/github-script@v3
       with:

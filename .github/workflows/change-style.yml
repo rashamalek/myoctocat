@@ -52,7 +52,7 @@ jobs:
         github-token: ${{ secrets.GITHUB_TOKEN }}
         script: |
           const fs = require('fs')
-          let styleType = process.env(STYLE_TYPE_VALUE)
+          let styleType = process.env.STYLE_TYPE_VALUE
           let newBody = context.payload.issue.body.replace(styleType, `${styleType}<!--checked-->`)
           fs.readFile(`./.github/styles/${styleType}.md`, 'utf8' , (err, data) => {
             if (err) {

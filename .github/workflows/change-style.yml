@@ -1,0 +1,12 @@
+name: Change Octocat style
+
+on:
+  issue_comment
+
+jobs:
+  detect_style_type:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Does it workflow
+      run: echo 'Hi'

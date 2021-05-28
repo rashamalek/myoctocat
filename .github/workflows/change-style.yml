@@ -38,7 +38,8 @@ jobs:
               }
             }
           }
-          
+    - name: debug
+      run: env
     - name: Add follow-up content
       if: steps.get-style-type.outputs.result && steps.get-style-type.outputs.result.alreadyChecked == false
       uses: actions/github-script@v4

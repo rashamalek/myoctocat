@@ -6,9 +6,20 @@ on:
 
 jobs:
   detect_style_type:
+    name: Detect style type
     runs-on: ubuntu-latest
     if: contains(github.event.issue.labels.*.name, 'Octocat style')
 
     steps:
-    - name: Does it workflow
-      run: echo 'Hi'
+    - name: Get checkboxes
+      uses: actions/github-script@v3
+      id: get-checkboxes
+      with:  
+        result-encoding: string
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+        script: |
+          console.log(context.payload.issue.body)
+          let rgx = /\-\s\[x\]\s(.*)/gm
+          let checkValue = rgx.exec(context.payload.issue.body)
+          console.log(checkValue)
+          return checkValue

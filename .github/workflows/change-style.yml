@@ -23,47 +23,26 @@ jobs:
           console.log(context.payload.issue.body)
           let rgx = /\-\s\[x\]\s(.*)/gm
           let rgxMatch = rgx.exec(context.payload.issue.body)
+          
           console.log(rgxMatch)
           if (rgxMatch) {
             let checkValue = rgxMatch[1]
             console.log(checkValue)
+            let newBody = context.payload.issue.body
+
             if (checkValue.includes('<!--checked-->')) {
               checkValue = checkValue.replace('<!--checked-->', '')
-              return {
-                value: checkValue,
-                alreadyChecked: true
-              }
             } else {
-              return {
-                value: checkValue,
-                alreadyChecked: false
+              newBody = newBody.replace(styleType, `${styleType}<!--checked-->`)
+            } 
+            
+            const fs = require('fs')
+            fs.readFile(`./.github/styles/${checkValue}.md`, 'utf8' , (err, data) => {
+              if (err) {
+                console.error(err)
+                return
+              } else {
+                console.log(data)
               }
-            }
+            })
           }
-    - name: debug
-      run: env
-    - name: Add follow-up content
-      if: steps.getStyleType.outputs.result && steps.getStyleType.outputs.result.alreadyChecked == false
-      uses: actions/github-script@v4
-      id: add-follow-up
-      env:
-        STYLE_TYPE_VALUE: ${{ steps.getStyleType.outputs.result.value }}
-        STYLE_TYPE_ALREADY_CHECK: ${{ steps.getStyleType.outputs.result.alreadyChecked }}
-      with:  
-        result-encoding: json
-        github-token: ${{ secrets.GITHUB_TOKEN }}
-        script: |
-          const fs = require('fs')
-          let styleType = '${{ steps.getStyleType.outputs.result.value }}'
-          let newBody = context.payload.issue.body.replace(styleType, `${styleType}<!--checked-->`)
-          fs.readFile(`./.github/styles/${styleType}.md`, 'utf8' , (err, data) => {
-            if (err) {
-              console.error(err)
-              return
-            } else {
-              console.log(data)
-            }
-          })
-          // let fup // load from disk
-          // newBody = newBody + fup
-          // update issue

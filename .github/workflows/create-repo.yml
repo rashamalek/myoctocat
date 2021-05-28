@@ -6,7 +6,7 @@ name: Create repo
 # or API.
 on:
   issues:
-    type: [opened, reopened]
+    types: [opened, reopened]
   workflow_dispatch:
     # Inputs the workflow accepts.
     inputs:

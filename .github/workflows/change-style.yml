@@ -33,7 +33,7 @@ jobs:
             if (checkValue.includes('<!--checked-->')) {
               checkValue = checkValue.replace('<!--checked-->', '')
             } else {
-              newBody = newBody.replace(styleType, `${styleType}<!--checked-->`)
+              newBody = newBody.replace(checkValue, `${checkValue}<!--checked-->`)
             } 
             
             const fs = require('fs')

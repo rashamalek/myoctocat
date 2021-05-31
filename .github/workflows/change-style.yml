@@ -94,6 +94,8 @@ jobs:
       run: |
         echo ${{ needs.detect_style_type.outputs.styleType }}
         echo ${{ needs.detect_style_type.outputs.styleOption }}
+    - name: Checkout
+      uses: actions/checkout@v2
     - name: Code 
       run: sed -i -e $'s+//CODE_HERE+octocat.set${{needs.detect_style_type.outputs.styleType}}("${{needs.detect_style_type.outputs.styleOption}}")\\\n\\\t\\\t\\\t\\\t//CODE_HERE+' ./src/components/Octocat.vue
     - name: Debug

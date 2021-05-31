@@ -46,12 +46,19 @@ jobs:
       with:
         github-token: ${{ secrets.TOKEN }}
         script: |
-          github.repos.createUsingTemplate(
+          await github.repos.createUsingTemplate(
             {
               owner: context.repo.owner,
               name: '${{env.REPO_NAME}}',
               template_repo: context.repo.repo,
               template_owner: context.repo.owner
+            }
+          )
+          github.issues.createLabel(
+            {
+              owner: context.repo.owner,
+              repo: '${{env.REPO_NAME}}',
+              name: 'Octocat style'
             }
           )
           

@@ -5,7 +5,7 @@ on:
     types: [created, edited]
 
 jobs:
-  create:
+  code:
     runs-on: ubuntu-latest
     if: contains(github.event.issue.labels.*.name, 'Octocat style')
 
@@ -20,7 +20,7 @@ jobs:
         result-encoding: string
         github-token: ${{ secrets.GITHUB_TOKEN }}
         script: |
-          let rgx = `type:\'(\w+)\'`gm
+          let rgx = /type:\'(\w+)\'/gm
           let styleType = rgx.exec(context.payload.comment.body)[1].trim()
           console.log(styleType)
           return styleType

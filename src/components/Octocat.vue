@@ -19,6 +19,7 @@ export default {
         octocat.setBodyColor({ primary: "#282828", underside: "#494949", suctions: "#99C7C9" })
 				octocat.setHeadgear("French Hat")
 				octocat.setHeadgear("Sombrero")
+				octocat.setEyewear("Scuba Goggles")
 				//CODE_HERE
       }     
       

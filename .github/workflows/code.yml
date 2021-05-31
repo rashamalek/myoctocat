@@ -40,7 +40,7 @@ jobs:
         echo "Style is ${{steps.get-style-type.outputs.result}}"
         echo "Option is ${{steps.get-style-option.outputs.result}}"
     - name: Code 
-      run: sed -i -e $'s+//CODE_HERE+set${{steps.get-style-type.outputs.result}}("${{steps.get-style-option.outputs.result}}")\\\n\\\t//CODE_HERE+' ./src/components/Octocat.vue
+      run: sed -i -e $'s+//CODE_HERE+octocat.set${{steps.get-style-type.outputs.result}}("${{steps.get-style-option.outputs.result}}")\\\n\\\t//CODE_HERE+' ./src/components/Octocat.vue
     - name: Debug
       run: cat ./src/components/Octocat.vue
     - name: Commit & Push

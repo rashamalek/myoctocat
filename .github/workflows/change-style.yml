@@ -86,9 +86,9 @@ jobs:
   code:
     name: Code the Octocat
     runs-on: ubuntu-latest
-    need: detect_style_type
+    needs: detect_style_type
     if: needs.detect_style_type.outputs.styleOption && needs.detect_style_type.outputs.styleType
-    
+
     steps:
     - name: Debug
       run: |

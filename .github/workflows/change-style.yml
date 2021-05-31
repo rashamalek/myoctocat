@@ -25,7 +25,7 @@ jobs:
           let rgx = /-\s\[x\]\s(.*)/gm
           //let rgxMatch = rgx.exec(context.payload.issue.body)
           
-          let rgxMatch = context.payload.issue.body.match(rgx)
+          let rgxMatch = context.payload.issue.body.matchAll(rgx)
 
           console.log(rgxMatch)
           if (rgxMatch) {

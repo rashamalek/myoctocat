@@ -28,14 +28,20 @@ jobs:
           let rgxMatch = [...body.matchAll(rgx)]
 
           console.log(rgxMatch)
-          if (rgxMatch) {
-            let checkValue = rgxMatch[1]
+
+          if (rgxMatch && rgxMatch.length > 0) {
+            let checkValue = rgxMatch[0][1]
             console.log(checkValue)
             let newBody = context.payload.issue.body
 
             if (checkValue.includes('<!--checked style-->')) {
               // Style was already selected 
               checkValue = checkValue.replace('<!--checked style-->', '')
+
+              if (rgxMatch.length > 1) {
+                let styleOption = rgxMatch[1][1]
+                console.log(styleOption)
+              }
             } else {
               // Style was not already selected. We need to provide options.
               newBody = newBody.replace(checkValue, `${checkValue}<!--checked style-->`)

@@ -17,7 +17,8 @@ export default {
         p5.createCanvas(500, 500);      
         octocat = new Octocat();
         octocat.setBodyColor({ primary: "#282828", underside: "#494949", suctions: "#99C7C9" })
-        //CODE_HERE
+        octocat.setHeadgear("Bandana")
+				//CODE_HERE
       }     
       
       // NOTE: Draw is here

@@ -13,6 +13,7 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v2
+      
     - name: Get Style type
       uses: actions/github-script@v3
       id: getStyleType
@@ -20,34 +21,40 @@ jobs:
         result-encoding: json
         github-token: ${{ secrets.GITHUB_TOKEN }}
         script: |
-          console.log(context.payload.issue.body)
-          //let rgx = /-\s\[x\]\s((?:\w|\s)+)\r/gm
           let rgx = /-\s\[x\]\s(.*)/gm
-          //let rgxMatch = rgx.exec(context.payload.issue.body)
           let body = context.payload.issue.body
           let rgxMatch = [...body.matchAll(rgx)]
 
-          console.log(rgxMatch)
+          // console.log(rgxMatch)
 
           if (rgxMatch && rgxMatch.length > 0) {
-            let checkValue = rgxMatch[0][1]
-            console.log(checkValue)
-            let newBody = context.payload.issue.body
-
-            if (checkValue.includes('<!--checked style-->')) {
+            let styleType = rgxMatch[0][1]
+            console.log(styleType)
+            
+            if (styleType.includes('<!--checked style-->')) {
               // Style was already selected 
-              checkValue = checkValue.replace('<!--checked style-->', '')
+              styleType = styleType.replace('<!--checked style-->', '')
 
               if (rgxMatch.length > 1) {
                 let styleOption = rgxMatch[1][1]
                 console.log(styleOption)
+                let commentBody = `A ${styleOption.toLowerCase()}??? Great idea, let's do this :man_dancing:!!!!<!--{type:'${styleType}',style:'${styleOption}'}-->`
+                github.issues.createComment(
+                  {
+                    owner: context.repo.owner,
+                    repo: context.repo.repo,
+                    issue_number: context.payload.issue.number,
+                    body: commentBody
+                  }
+                )
               }
             } else {
               // Style was not already selected. We need to provide options.
-              newBody = newBody.replace(checkValue, `${checkValue}<!--checked style-->`)
+              let newBody = context.payload.issue.body
+              newBody = newBody.replace(styleType, `${styleType}<!--checked style-->`)
 
               const fs = require('fs')
-              fs.readFile(`./.github/styles/${checkValue}.md`, 'utf8' , (err, data) => {
+              fs.readFile(`./.github/styles/${styleType}.md`, 'utf8' , (err, data) => {
                 if (err) {
                   console.error(err)
                   return

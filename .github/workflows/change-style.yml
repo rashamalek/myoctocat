@@ -21,7 +21,7 @@ jobs:
         github-token: ${{ secrets.GITHUB_TOKEN }}
         script: |
           console.log(context.payload.issue.body)
-          let rgx = /-\s\[x\]\s((?:\w|\s)+)\n/gm
+          let rgx = /-\s\[x\]\s((?:\w|\s)+)/gm
           let rgxMatch = rgx.exec(context.payload.issue.body)
           
           console.log(rgxMatch)

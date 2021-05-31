@@ -1,0 +1,28 @@
+name: Code the style
+
+on:
+  issue_comment:
+    types: [created, edited]
+
+jobs:
+  create:
+    runs-on: ubuntu-latest
+    if: contains(github.event.issue.labels.*.name, 'Octocat style')
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+    
+    - name: Get the style type
+      uses: actions/github-script@v3
+      id: get-style-type
+      with:  
+        result-encoding: string
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+        script: |
+          let rgx = `type:\'(\w+)\'`gm
+          let styleType = rgx.exec(context.payload.comment.body)[1].trim()
+          console.log(styleType)
+          return styleType
+    - name: Debug 
+      run: echo "Style=${{steps.get-style-type.outputs.result}}"

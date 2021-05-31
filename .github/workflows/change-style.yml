@@ -16,7 +16,7 @@ jobs:
       
     - name: Get Style type
       uses: actions/github-script@v3
-      id: getStyleType
+      id: getStyleChoices
       with:  
         result-encoding: json
         github-token: ${{ secrets.GITHUB_TOKEN }}
@@ -47,6 +47,7 @@ jobs:
                     body: commentBody
                   }
                 )
+                return {styleType: styleType, styleOption: styleOption}
               }
             } else {
               // Style was not already selected. We need to provide options.
@@ -71,4 +72,8 @@ jobs:
                 }
               })
             } 
+            return {styleType: styleType}
           }
+      
+    - name: Debug
+      run: echo ${{ steps.getStyleChoices.outputs.result.styleType }}

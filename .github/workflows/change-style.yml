@@ -9,6 +9,9 @@ jobs:
     name: Detect style type
     runs-on: ubuntu-latest
     if: contains(github.event.issue.labels.*.name, 'Octocat style')
+    outputs:
+      styleType: ${{ fromJSON(steps.getStyleChoices.outputs.result).styleType }}
+      styleOption: ${{ fromJSON(steps.getStyleChoices.outputs.result).styleOption }}
 
     steps:
     - name: Checkout
@@ -76,4 +79,29 @@ jobs:
           }
       
     - name: Debug
-      run: echo ${{ fromJSON(steps.getStyleChoices.outputs.result).styleType }}
+      run: |
+        echo ${{ fromJSON(steps.getStyleChoices.outputs.result).styleType }}
+        echo ${{ fromJSON(steps.getStyleChoices.outputs.result).styleOption }}
+  
+  code:
+    name: Code the Octocat
+    runs-on: ubuntu-latest
+    need: detect_style_type
+    if: needs.detect_style_type.outputs.styleOption && needs.detect_style_type.outputs.styleType
+    
+    steps:
+    - name: Debug
+      run: |
+        echo ${{ needs.detect_style_type.outputs.styleType }}
+        echo ${{ needs.detect_style_type.outputs.styleOption }}
+    - name: Code 
+      run: sed -i -e $'s+//CODE_HERE+octocat.set${{needs.detect_style_type.outputs.styleType}}("${{needs.detect_style_type.outputs.styleOption}}")\\\n\\\t\\\t\\\t\\\t//CODE_HERE+' ./src/components/Octocat.vue
+    - name: Debug
+      run: cat ./src/components/Octocat.vue
+    - name: Commit & Push
+      run: |
+        git config user.name github-actions
+        git config user.email github-actions@github.com
+        git add .
+        git commit -m "Octocat generated"
+        git push

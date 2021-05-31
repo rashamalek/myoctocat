@@ -30,27 +30,29 @@ jobs:
             console.log(checkValue)
             let newBody = context.payload.issue.body
 
-            if (checkValue.includes('<!--checked-->')) {
-              checkValue = checkValue.replace('<!--checked-->', '')
+            if (checkValue.includes('<!--checked style-->')) {
+              // Style was already selected 
+              checkValue = checkValue.replace('<!--checked style-->', '')
             } else {
-              newBody = newBody.replace(checkValue, `${checkValue}<!--checked-->`)
+              // Style was not already selected. We need to provide options.
+              newBody = newBody.replace(checkValue, `${checkValue}<!--checked style-->`)
+
+              const fs = require('fs')
+              fs.readFile(`./.github/styles/${checkValue}.md`, 'utf8' , (err, data) => {
+                if (err) {
+                  console.error(err)
+                  return
+                } else {
+                  newBody = newBody + '\n<!--style options-->' + data
+                  github.issues.update(
+                    {
+                      owner: context.repo.owner,
+                      repo: context.repo.repo,
+                      issue_number: context.payload.issue.number,
+                      body: newBody
+                    }
+                  )
+                }
+              })
             } 
-            
-            const fs = require('fs')
-            fs.readFile(`./.github/styles/${checkValue}.md`, 'utf8' , (err, data) => {
-              if (err) {
-                console.error(err)
-                return
-              } else {
-                newBody = newBody + '\n' + data
-                github.issues.update(
-                  {
-                    owner: context.repo.owner,
-                    repo: context.repo.repo,
-                    issue_number: context.payload.issue.number,
-                    body: newBody
-                  }
-                )
-              }
-            })
           }

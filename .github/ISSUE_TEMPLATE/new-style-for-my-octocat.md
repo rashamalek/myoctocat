@@ -2,7 +2,7 @@
 name: New style for my Octocat
 about: I need to up my Octocat's style
 title: Add <insert style> for my Octocat
-labels: Octocat style
+labels: 'Octocat style'
 assignees: ''
 
 ---

@@ -22,7 +22,7 @@ jobs:
         script: |
           console.log(context.payload.issue.body)
           let rgx = /-\s\[x\]\s((?:\w|\s)+)/gm
-          let rgxMatch = rgx.exec(context.payload.issue.body)
+          let rgxMatch = rgx.match(context.payload.issue.body)
           
           console.log(rgxMatch)
           if (rgxMatch) {

@@ -76,4 +76,4 @@ jobs:
           }
       
     - name: Debug
-      run: echo ${{ steps.getStyleChoices.outputs.result }}
+      run: echo ${{ fromJSON(steps.getStyleChoices.outputs.result).styleType }}

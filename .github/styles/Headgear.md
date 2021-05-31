@@ -6,4 +6,3 @@ Let's choose some headgear!!!
 - [ ] Bandana
 - [ ] Sweatband
 - [ ] French Hat
-- [ ] Sunglasses Ray Bans

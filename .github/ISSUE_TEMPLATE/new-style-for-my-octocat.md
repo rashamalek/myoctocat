@@ -10,5 +10,5 @@ assignees: ''
 Which element of your Octocat do you want to make :sparkles: ? 
 - [ ] Headgear
 - [ ] Eyewear
-- [ ] Tops
+- [ ] Top
 - [ ] Bottom
